@@ -1,0 +1,7 @@
+Файловая система Размер Использовано  Дост Использовано% Cмонтировано в
+devtmpfs           1,9G            0  1,9G            0% /dev
+tmpfs              1,9G            0  1,9G            0% /dev/shm
+tmpfs              1,9G         592K  1,9G            1% /run
+tmpfs              1,9G            0  1,9G            0% /sys/fs/cgroup
+/dev/vda2           20G         4,6G   16G           23% /
+tmpfs              379M            0  379M            0% /run/user/1000
