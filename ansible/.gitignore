@@ -1,0 +1,16 @@
+/ansible.cfg
+/common/files/*
+/hosts
+#/playbooks/
+/roles/*
+#add_user_centos.yml
+#add_user.yml
+#install-mc.yml
+#install-test.yml
+#install-zabbix.yml
+#redis_test.yml
+/playbooks/script_apache.yml
+/playbooks/script.yml
+
+~                                                                               
+~                    
