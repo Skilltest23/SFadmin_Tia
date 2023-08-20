@@ -2,7 +2,7 @@
 - hosts: servers 
   become: yes
   tasks:
-
+#
   - name: Add user to remote hosts
     user: name=ansible-admin groups=wheel shell=/bin/bash
 
