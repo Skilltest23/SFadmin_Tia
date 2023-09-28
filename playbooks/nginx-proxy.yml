@@ -1,0 +1,45 @@
+---
+
+- hosts: postgres 
+  become: yes
+  tasks:
+
+  - name: nginx on Ubuntu 
+    apt:
+        name=nginx
+        state=latest
+    when:
+        ansible_os_family == "Debian"
+        
+  - name: Copy config
+    copy:
+      src: /etc/ansible/common/files/Kibana_proxy.conf 
+      dest: /etc/nginx/sites-available/
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Copy pass file
+    copy:
+      src: /etc/ansible/common/files/.htpasswd
+      dest: /etc/nginx/
+      owner: root
+      group: root
+      mode: 0644
+
+    notify:
+        nginx systemd
+  handlers:
+  - name: nginx systemd
+    systemd:
+     name:
+        nginx.service
+     enabled: yes
+     state: started
+
+  - name: Start Kibana Service
+    become: yes
+    service:
+      name: kibana
+      state: restarted
+

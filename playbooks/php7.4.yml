@@ -1,0 +1,22 @@
+- hosts: web
+  become: yes
+  tasks:
+    - name:  install php7.4.
+      apt: name=software-properties-common
+
+    - name: "Repo PHP 7.4"
+      apt_repository:
+        repo="ppa:ondrej/php"
+   
+    - name: "Updating the repo"
+      apt: update_cache=yes
+
+    - name: Installation PHP 7.4
+      apt: name=php7.4 state=present
+
+    - name: install lamp stack
+      apt:
+        pkg:
+          - php7.4-fpm
+        state: present
+        update_cache: yes 

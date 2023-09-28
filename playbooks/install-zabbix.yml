@@ -1,0 +1,43 @@
+---
+
+- hosts: zabbix
+  become: yes
+  tasks:
+
+  - name: Install zabbix-agent on Ubuntu 
+    apt:
+        name=zabbix-agent
+        state=latest
+    when:
+        ansible_os_family == "Debian"
+
+  - name: Update zabbix server ip
+    ansible.builtin.lineinfile:
+       path: /etc/zabbix/zabbix_agentd.conf
+       regexp: 'Server='
+       insertafter: '#^Server='
+       line: Server=84.201.152.140
+
+  - name: Update zabbix server active
+    ansible.builtin.lineinfile:
+       path: /etc/zabbix/zabbix_agentd.conf
+       regex: 'ServerActive=*'
+       state: absent
+
+  - name: Update zabbix server hostname
+    ansible.builtin.lineinfile:
+       path: /etc/zabbix/zabbix_agentd.conf
+       regexp: 'Hostname='
+       insertafter: '#^Hostname='
+       line: Hostname=ubntu2004-final-master
+
+    notify:
+        zabbix-agent systemd
+  handlers:
+  - name: zabbix-agent systemd
+    systemd:
+     name:
+        zabbix-agent.service
+     enabled: yes
+     state: started
+#

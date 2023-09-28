@@ -1,0 +1,72 @@
+- hosts: web 
+  become: yes
+  tasks:
+  -  name: Install openvpn on Ubuntu
+     apt:
+        name=openvpn
+        state=latest
+     when:
+        ansible_os_family == "Debian"
+
+  - name: Copy vpn config to client "client.conf" 
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/client.conf  
+      dest: /etc/openvpn/client.conf
+      owner: root
+      group: root
+      mode: '0640'
+
+  - name: Copy ca.crt to client  
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/ca.crt   
+      dest: /etc/openvpn/client/ca.crt 
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Copy file to client  
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/client.pw   
+      dest: /etc/openvpn/client/client.pw
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Copy ta.key to client  
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/ta.key   
+      dest: /etc/openvpn/client/ta.key
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Copy user key to client  
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/slave.key
+      dest: /etc/openvpn/client/slave.key
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Copy user cert client  
+    ansible.builtin.copy:
+      src: /etc/ansible/common/files/client/slave.crt
+      dest: /etc/openvpn/client/slave.crt
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Update config cert line
+    ansible.builtin.lineinfile:
+       path: /etc/openvpn/client.conf
+       regexp: 'cert'
+       insertafter: '#^cert'
+       line: cert client/slave.crt      
+
+  - name: Update config key line
+    ansible.builtin.lineinfile:
+       path: /etc/openvpn/client.conf
+       regexp: 'key'
+       insertafter: '#^key'
+       line: key client/slave.key      
+

@@ -1,0 +1,10 @@
+- hosts: zabbix
+  become: yes
+  tasks:
+  -  name: Install mc on Ubuntu
+     apt:
+        name=mc
+        state=latest
+     when:
+        ansible_os_family == "Debian"
+
